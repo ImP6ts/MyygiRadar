@@ -1,0 +1,130 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // List of configurable administrator Firebase UIDs.
+    // In production, update this list or assign custom claim `admin: true` via Firebase Admin SDK.
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.uid in [
+          'admin_myygiradar_master',
+          'arletpdr_admin_uid',
+          'dev_test_admin_uid'
+        ] || (request.auth.token.keys().hasAll(['admin']) && request.auth.token.admin == true)
+      );
+    }
+
+    // Commercial retail locations with moderation lifecycle:
+    // Statuses: 'PENDING', 'APPROVED', 'REJECTED'
+    match /locations/{locationId} {
+      // Public map only displays APPROVED locations.
+      // Submitter can see their own submissions (including PENDING and REJECTED).
+      // Administrators can read all locations.
+      allow read: if (resource.data.status == 'APPROVED')
+        || !('status' in resource.data) // Legacy / seed locations default to public approved
+        || (isAuthenticated() && resource.data.submittedBy == request.auth.uid)
+        || isAdmin();
+
+      // Normal authenticated users can only submit locations with status PENDING.
+      // They CANNOT directly create APPROVED or REJECTED locations.
+      // Admins can create APPROVED locations directly.
+      allow create: if (
+        isAuthenticated()
+        && request.resource.data.status == 'PENDING'
+        && request.resource.data.submittedBy == request.auth.uid
+        && request.resource.data.submittedAt == request.time
+        && request.resource.data.reviewedBy == null
+        && request.resource.data.reviewedAt == null
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 1
+        && request.resource.data.latitude is number
+        && request.resource.data.longitude is number
+      ) || isAdmin();
+
+      // Status modification, approval, and rejection is RESTRICTED TO ADMINS ONLY.
+      // Regular users CANNOT approve, reject, or modify status.
+      // Regular users can only update basic details of their own PENDING submissions (status must remain PENDING).
+      allow update: if isAdmin() || (
+        isAuthenticated()
+        && isOwner(resource.data.submittedBy)
+        && resource.data.status == 'PENDING'
+        && request.resource.data.status == 'PENDING'
+        && request.resource.data.submittedBy == resource.data.submittedBy
+        && request.resource.data.reviewedBy == null
+      );
+
+      // Only administrators can delete locations.
+      allow delete: if isAdmin();
+    }
+
+    // Issue reports on existing locations ("TEATA VEAST")
+    // e.g., location doesn't exist, duplicate, incorrect name, incorrect position
+    match /locationIssueReports/{reportId} {
+      // Users can see their own reported issues; admins see all for review
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.reportedBy == request.auth.uid);
+
+      // Any authenticated user can submit an issue report
+      allow create: if isAuthenticated()
+        && request.resource.data.reportedBy == request.auth.uid
+        && request.resource.data.reportedAt == request.time
+        && request.resource.data.status == 'PENDING'
+        && request.resource.data.locationId is string;
+
+      // Only admins can update status (e.g. resolve/dismiss) or delete
+      allow update, delete: if isAdmin();
+    }
+
+    // Known companies / sales representatives (read-only for clients)
+    match /companies/{companyId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Sales points mapping locations to companies
+    match /salesPoints/{salesPointId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Crowdsourced presence reports
+    // CRITICAL: Reports can ONLY be submitted for APPROVED locations!
+    match /reports/{reportId} {
+      allow read: if true;
+      allow create: if isAuthenticated()
+        && request.resource.data.anonymousUserId == request.auth.uid
+        && request.resource.data.status in ['PRESENT', 'NOT_PRESENT']
+        && request.resource.data.timestamp == request.time
+        && request.resource.data.latitude is number
+        && request.resource.data.longitude is number
+        && request.resource.data.gpsAccuracy is number
+        // Ensure the target location exists and is APPROVED
+        && (
+          !exists(/databases/$(database)/documents/locations/$(request.resource.data.locationId))
+          || get(/databases/$(database)/documents/locations/$(request.resource.data.locationId)).data.status == 'APPROVED'
+          || !('status' in get(/databases/$(database)/documents/locations/$(request.resource.data.locationId)).data)
+        );
+
+      // Immutable reports: no updates or deletions by regular users to prevent manipulation
+      allow update, delete: if isAdmin();
+    }
+
+    // User profile for reputation and settings
+    match /userProfiles/{userId} {
+      allow read, write: if isOwner(userId) || isAdmin();
+    }
+
+    // Geofencing arrival notification history
+    match /notificationHistory/{historyId} {
+      allow read, write: if (isAuthenticated() && request.resource.data.userId == request.auth.uid) || isAdmin();
+    }
+  }
+}

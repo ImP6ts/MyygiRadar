@@ -1,0 +1,10 @@
+{
+  "name": "Müügiradar Eesti",
+  "description": "Eesti kaubanduskeskuste ja jaepoodide müügiesindajate reaalajas kohalolu kaart ja teavitussüsteem.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

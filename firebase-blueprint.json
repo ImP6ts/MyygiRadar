@@ -1,0 +1,87 @@
+{
+  "entities": {
+    "Location": {
+      "collection": "locations",
+      "fields": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "address": { "type": "string" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "geofenceRadius": { "type": "number" },
+        "city": { "type": "string" },
+        "type": { "type": "string" },
+        "active": { "type": "boolean" },
+        "status": { "type": "string" },
+        "submittedBy": { "type": "string" },
+        "submittedAt": { "type": "timestamp" },
+        "reviewedBy": { "type": "string" },
+        "reviewedAt": { "type": "timestamp" }
+      }
+    },
+    "LocationIssueReport": {
+      "collection": "locationIssueReports",
+      "fields": {
+        "id": { "type": "string" },
+        "locationId": { "type": "string" },
+        "locationName": { "type": "string" },
+        "issueType": { "type": "string" },
+        "description": { "type": "string" },
+        "reportedBy": { "type": "string" },
+        "reportedAt": { "type": "timestamp" },
+        "status": { "type": "string" }
+      }
+    },
+    "Company": {
+      "collection": "companies",
+      "fields": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "active": { "type": "boolean" }
+      }
+    },
+    "SalesPoint": {
+      "collection": "salesPoints",
+      "fields": {
+        "id": { "type": "string" },
+        "locationId": { "type": "string" },
+        "companyId": { "type": "string" },
+        "active": { "type": "boolean" }
+      }
+    },
+    "Report": {
+      "collection": "reports",
+      "fields": {
+        "id": { "type": "string" },
+        "locationId": { "type": "string" },
+        "companyId": { "type": "string" },
+        "status": { "type": "string" },
+        "timestamp": { "type": "timestamp" },
+        "anonymousUserId": { "type": "string" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "gpsAccuracy": { "type": "number" }
+      }
+    },
+    "UserProfile": {
+      "collection": "userProfiles",
+      "fields": {
+        "id": { "type": "string" },
+        "createdAt": { "type": "timestamp" },
+        "reputationWeight": { "type": "number" },
+        "settings": { "type": "map" }
+      }
+    },
+    "NotificationHistory": {
+      "collection": "notificationHistory",
+      "fields": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "locationId": { "type": "string" },
+        "companyId": { "type": "string" },
+        "timestamp": { "type": "timestamp" }
+      }
+    }
+  }
+}

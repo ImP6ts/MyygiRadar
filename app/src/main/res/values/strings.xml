@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Müügiradar Eesti</string>
+
+    <!-- Navigation -->
+    <string name="nav_map">Kaart</string>
+    <string name="nav_nearby">Läheduses</string>
+    <string name="nav_reports">Aruanded</string>
+    <string name="nav_settings">Seaded</string>
+    <string name="nav_admin">Kinnitamine</string>
+    <string name="nav_submissions">Minu kohad</string>
+
+    <!-- Location Submission & Moderation -->
+    <string name="btn_add_location">LISA POOD / OSTUKESKUS</string>
+    <string name="title_admin_moderation">ASUKOHTADE KINNITAMINE</string>
+    <string name="title_report_issue">TEATA VEAST</string>
+    <string name="status_pending">OOTEL</string>
+    <string name="status_approved">KINNITATUD</string>
+    <string name="status_rejected">TAGASI LÜKATUD</string>
+    <string name="submitted_for_review">Esitatud kinnitamiseks</string>
+    <string name="duplicate_location_warning">Sarnane asukoht on juba olemas.</string>
+    <string name="action_approve">KINNITA</string>
+    <string name="action_reject">LÜKKA TAGASI</string>
+
+    <!-- Statuses -->
+    <string name="status_present">Kohal</string>
+    <string name="status_probably_present">Tõenäoliselt kohal</string>
+    <string name="status_probably_absent">Tõenäoliselt ei ole kohal</string>
+    <string name="status_unknown">Teadmata</string>
+
+    <!-- Reporting -->
+    <string name="report_title">Kas siin on müügimees?</string>
+    <string name="report_btn_present">Jah, on kohal</string>
+    <string name="report_btn_absent">Ei ole kohal</string>
+    <string name="report_company_label">Vali ettevõte</string>
+    <string name="report_submit_success">Aruanne edukalt salvestatud!</string>
+    <string name="report_gps_warning">Tähelepanu: Sinu GPS asukoha täpsus on madal (%1$.0f m). Raport märgistatakse madalama usaldusväärsusega.</string>
+    <string name="report_too_far">Oled sellest asukohast liiga kaugel (%1$.0f m, lubatud raadius %2$.0f m). Kinnitatud raportit saab esitada vaid läheduses olles.</string>
+
+    <!-- Details Sheet -->
+    <string name="last_confirmation">Viimane kinnitus</string>
+    <string name="recent_confirmations">Hiljutised kinnitused</string>
+    <string name="persistent_presence_today">%1$s kohalolek on täna selles kohas korduvalt kinnitatud.</string>
+    <string name="no_recent_reports">Viimase paari tunni jooksul raporteid pole.</string>
+
+    <!-- Geofencing & Notifications -->
+    <string name="notif_arrival_title">Oled saabunud asukohta %1$s</string>
+    <string name="notif_arrival_prompt">Kas siin on praegu %1$s müügiesindaja?</string>
+    <string name="notif_action_yes">Jah</string>
+    <string name="notif_action_no">Ei</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Seaded</string>
+    <string name="settings_permissions">Õigused</string>
+    <string name="settings_loc_permission">Asukoha luba</string>
+    <string name="settings_notif_permission">Teavituste luba</string>
+    <string name="settings_geofencing">Saabumise kontrollid</string>
+    <string name="settings_geofencing_desc">Teavita kaubanduskeskusesse saabumisel ja küsi müügiesindajate kohta</string>
+    <string name="settings_cooldown">Teavituste ooteaeg</string>
+    <string name="settings_cooldown_value">%1$d tundi</string>
+    <string name="settings_privacy_title">Privaatsus ja anonüümsus</string>
+    <string name="settings_privacy_desc">Me ei jälgi ega nimeta konkreetseid inimesi. Rakendus jälgib vaid ettevõtete müügipunktide aktiivsust avalikes kaubanduspindades. Sinu raportid on seotud anonüümse Firebase ID-ga.</string>
+    <string name="settings_about_title">Müügiradarist</string>
+    <string name="settings_about_desc">Ühisloome põhine platvorm Eesti tarbijatele. Versioon 1.0.0 (MVP).</string>
+
+    <!-- Common -->
+    <string name="search_hint">Otsi keskust või poodi…</string>
+    <string name="use_my_location">Kasuta minu asukohta</string>
+    <string name="retry">Proovi uuesti</string>
+    <string name="cancel">Katkesta</string>
+    <string name="close">Sulge</string>
+</resources>
